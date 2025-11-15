@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+--primary-color: #FF0000;        /* Rouge ABSA */
+    --secondary-color: #000000;      /* Noir ABSA */
+    --accent-color: #FFD700;         /* Or ABSA */
+    --text-color: #000000;           /* Texte noir ABSA */
+    --background-color: #FFFFFF;     /* Fond blanc ABSA */
+    --error-color: #FF0000;          /* Rouge ABSA pour les erreurs */
+    --success-color: #00A650;        /* Vert ABSA */
+    --pending-color: #FFD700;        /* Or ABSA pour les statuts en attente */
+    --card-premier-color: #000000;   /* Noir ABSA pour cartes premium */
+    --card-gold-color: #FFD700;      /* Or ABSA */
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo img {
+    width: 196.8px;
+    height: 54.6px;
+  }
+
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    color: var(--primary-color);
+  }
+
+  nav ul li a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+  }
+
+  main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.1) 10px,
+      rgba(255, 255, 255, 0.1) 20px
+    );
+    animation: shine 20s linear infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .welcome-banner h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .welcome-banner .date {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .profile-section {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out, slideIn 0.5s ease-out;
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+  }
+
+  .profile-info h2 {
+    margin: 0;
+    color: var(--primary-color);
+  }
+
+  .profile-info p {
+    margin: 0.5rem 0;
+    color: var(--secondary-color);
+  }
+
+  .profile-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .detail-group h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .detail-item {
+    margin-bottom: 1rem;
+  }
+
+  .detail-item strong {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #1967d2;
+    transform: translateY(-2px);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 30px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 3px 0;
+    transition: 0.4s;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+    nav {
+      display: none;
+      width: 100%;
+    }
+    nav.active {
+      display: block;
+    }
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    header {
+      flex-wrap: wrap;
+    }
+    .welcome-banner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .welcome-banner .date {
+      margin-top: 1rem;
+    }
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    .profile-details {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="logo2.png" alt="Crédit Mutuel logo">
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dask2m8.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="comp4z1.html"><i class="fas fa-wallet"></i> Accounts</a></li>
+        <li><a href="virr9t3.html"><i class="fas fa-exchange-alt"></i> Transfers</a></li>
+        <li><a href="serm5q6.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a href="carv8w2.html"><i class="fas fa-credit-card"></i> My Cards</a></li>
+        <li><a href="pros1j7.html" class="active"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="deconx7f9.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <marquee style="color: #FF0000">Your account is blocked, please contact your account manager</marquee>
+    <div class="welcome-banner">
+      <h1>Profile</h1>
+      <div class="date" id="current-date"></div>
+    </div>
+
+    <section class="profile-section">
+      <div class="profile-header">
+        <img src="logo2.png" alt="Profile picture" class="profile-picture">
+        <div class="profile-info">
+          <h2>Philippe BEAUREGARD</h2>
+          <p>Customer since February 10, 2010</p>
+          <p>Customer number: 0032524685</p>
+        </div>
+      </div>
+
+      <div class="profile-details">
+        <div class="detail-group">
+          <h3><i class="fas fa-user"></i> Personal Information</h3>
+          <div class="detail-item">
+            <strong>Date of birth:</strong>
+            19/02/1944
+          </div>
+          <div class="detail-item">
+            <strong>Address:</strong>
+            16 Lilyvale St, Rayton, Bloemfontein, 9301
+          </div>
+          <div class="detail-item">
+            <strong>Phone:</strong>
+            0654678335
+          </div>
+          <div class="detail-item">
+            <strong>Email:</strong>
+            phillbeaug44@gmail.com
+          </div>
+          <button><i class="fas fa-edit"></i> Edit Information</button>
+        </div>
+
+        <div class="detail-group">
+          <h3><i class="fas fa-envelope"></i> Communication Preferences</h3>
+          <div class="detail-item">
+            <strong>Bank statements:</strong>
+            By email
+          </div>
+          <div class="detail-item">
+            <strong>Notifications:</strong>
+            SMS and email
+          </div>
+          <div class="detail-item">
+            <strong>Preferred language:</strong>
+            English
+          </div>
+          <button><i class="fas fa-cog"></i> Manage Preferences</button>
+        </div>
+
+        <div class="detail-group">
+          <h3><i class="fas fa-shield-alt"></i> Security</h3>
+          <div class="detail-item">
+            <strong>Last Transaction:</strong>
+            July 2016
+          </div>
+          <div class="detail-item">
+            <strong>Two-factor authentication:</strong>
+            Enabled
+          </div>
+          <div class="detail-item">
+            <strong>Last password update:</strong>
+            141 months ago
+          </div>
+          <button><i class="fas fa-lock"></i> Security Settings</button>
+        </div>
+
+        <div class="detail-group">
+          <h3><i class="fas fa-file-alt"></i> Documents</h3>
+          <div class="detail-item">
+            <strong>Bank agreement</strong> (PDF)
+          </div>
+          <div class="detail-item">
+            <strong>Last tax certificate</strong> (PDF)
+          </div>
+          <div class="detail-item">
+            <strong>ID card</strong> (JPG)
+          </div>
+          <button><i class="fas fa-folder-open"></i> Manage Documents</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+	  if (sessionStorage.getItem("est_connecte") !== "true") {
+  window.location.href = "conx7f9.html";
+}
+    // Hamburger menu
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('nav').classList.toggle('active');
+    });
+
+    // Current date
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric' };
+    document.getElementById('current-date').textContent = currentDate.toLocaleDateString('en-US', options);
+
+    // Animation for profile sections
+    const profileSections = document.querySelectorAll('.profile-section, .detail-group');
+    profileSections.forEach((section, index) => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        section.style.opacity = '1';
+        section.style.transform = 'translateY(0)';
+      }, 100 * index);
+    });
+
+    // Button click handling
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        alert('YOUR ACCOUNT IS RESTRICTED, PLEASE CONTACT YOUR ACCOUNT MANAGER!');
+      });
+    });
+  </script>
+</body>
+</html>

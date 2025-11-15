@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+--primary-color: #FF0000;        /* Rouge ABSA */
+    --secondary-color: #000000;      /* Noir ABSA */
+    --accent-color: #FFD700;         /* Or ABSA */
+    --text-color: #000000;           /* Texte noir ABSA */
+    --background-color: #FFFFFF;     /* Fond blanc ABSA */
+    --error-color: #FF0000;          /* Rouge ABSA pour les erreurs */
+    --success-color: #00A650;        /* Vert ABSA */
+    --pending-color: #FFD700;        /* Or ABSA pour les statuts en attente */
+    --card-premier-color: #000000;   /* Noir ABSA pour cartes premium */
+    --card-gold-color: #FFD700;      /* Or ABSA */
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo img {
+    width: 196.8px;
+    height: 54.6px;
+  }
+
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    color: var(--primary-color);
+  }
+
+  nav ul li a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+  }
+
+  main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.1) 10px,
+      rgba(255, 255, 255, 0.1) 20px
+    );
+    animation: shine 20s linear infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .welcome-banner h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .welcome-banner .date {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .service-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out, slideIn 0.5s ease-out;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  .service-card h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+  }
+
+  .service-card p {
+    margin-bottom: 1.5rem;
+  }
+
+  .service-card .icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+  }
+
+  button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #1967d2;
+    transform: translateY(-2px);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 30px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 3px 0;
+    transition: 0.4s;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+    nav {
+      display: none;
+      width: 100%;
+    }
+    nav.active {
+      display: block;
+    }
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    header {
+      flex-wrap: wrap;
+    }
+    .welcome-banner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .welcome-banner .date {
+      margin-top: 1rem;
+    }
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="logo2.png" alt="Crédit Mutuel logo">
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dask2m8.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="comp4z1.html"><i class="fas fa-wallet"></i> Accounts</a></li>
+        <li><a href="virr9t3.html"><i class="fas fa-exchange-alt"></i> Transfers</a></li>
+        <li><a href="serm5q6.html" class="active"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a href="carv8w2.html"><i class="fas fa-credit-card"></i> My Cards</a></li>
+        <li><a href="pros1j7.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="deconx7f9"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <marquee style="color: #FF0000">Your account is blocked, please contact your account manager</marquee>
+    <div class="welcome-banner">
+      <h1>Our Services</h1>
+      <div class="date" id="current-date"></div>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-piggy-bank"></i></div>
+        <h2>Savings</h2>
+        <p>Discover our savings solutions tailored to your financial goals, from savings accounts to term deposits.</p>
+        <button>Learn More</button>
+      </div>
+
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-home"></i></div>
+        <h2>Mortgage Loan</h2>
+        <p>Realize your real estate project with our personalized loan offers and expert advice.</p>
+        <button>Simulate a Loan</button>
+      </div>
+
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-car"></i></div>
+        <h2>Auto Loan</h2>
+        <p>Finance your new vehicle purchase with our advantageous auto loan solutions.</p>
+        <button>Get a Quote</button>
+      </div>
+
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-umbrella"></i></div>
+        <h2>Insurance</h2>
+        <p>Protect yourself and your loved ones with our life, home, and income protection insurance offers.</p>
+        <button>Discover Our Offers</button>
+      </div>
+
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+        <h2>Investments</h2>
+        <p>Diversify your assets with our investment solutions: stocks, bonds, mutual funds, and more.</p>
+        <button>Invest Now</button>
+      </div>
+
+      <div class="service-card">
+        <div class="icon"><i class="fas fa-globe"></i></div>
+        <h2>International Services</h2>
+        <p>Benefit from our currency exchange, international money transfer, and travel assistance services.</p>
+        <button>Explore Services</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+	  if (sessionStorage.getItem("est_connecte") !== "true") {
+  window.location.href = "conx7f9.html";
+}
+    // Hamburger menu
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('nav').classList.toggle('active');
+    });
+
+    // Current date
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric' };
+    document.getElementById('current-date').textContent = currentDate.toLocaleDateString('en-US', options);
+
+    // Animation for service cards
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 100 * index);
+    });
+
+    // Button click handling
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        alert('YOUR ACCOUNT IS RESTRICTED, PLEASE CONTACT YOUR ACCOUNT MANAGER!');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cards</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  :root {
+--primary-color: #FF0000;        /* Rouge ABSA */
+    --secondary-color: #000000;      /* Noir ABSA */
+    --accent-color: #FFD700;         /* Or ABSA */
+    --text-color: #000000;           /* Texte noir ABSA */
+    --background-color: #FFFFFF;     /* Fond blanc ABSA */
+    --error-color: #FF0000;          /* Rouge ABSA pour les erreurs */
+    --success-color: #00A650;        /* Vert ABSA */
+    --pending-color: #FFD700;        /* Or ABSA pour les statuts en attente */
+    --card-premier-color: #000000;   /* Noir ABSA pour cartes premium */
+    --card-gold-color: #FFD700;      /* Or ABSA */
+  }
+  body { 
+    font-family: 'Poppins', sans-serif; 
+    margin:0; 
+    padding:0; 
+    background: var(--background-color); 
+    color:var(--text-color); 
+  }
+  
+  /* Header and Menu */
+  header {
+    background:#fff; 
+    padding:1rem; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+    box-shadow:0 2px 4px rgba(0,0,0,0.1); 
+    position:sticky; 
+    top:0; 
+    z-index:1000;
+  }
+  .logo img { 
+    width: 196.8px; 
+    height: 54.6px; 
+  }
+  nav ul { 
+    display:flex; 
+    list-style:none; 
+    gap:1.5rem; 
+    padding:0; 
+    margin:0; 
+  }
+  nav ul li a { 
+    text-decoration:none; 
+    color:var(--text-color); 
+    font-weight:500; 
+    transition:0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  nav ul li a:hover { 
+    color: var(--primary-color); 
+  }
+  nav ul li a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 30px;
+    height: 3px;
+    background: var(--text-color);
+    margin: 3px 0;
+    transition: 0.4s;
+  }
+  
+  /* Alert banner */
+  .alert-banner {
+    background: var(--error-color);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Welcome banner */
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255,255,255,0.1) 10px,
+      rgba(255,255,255,0.1) 20px
+    );
+    animation: shine 20s linear infinite;
+  }
+  
+  @keyframes shine {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  
+  .welcome-banner h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .welcome-banner .date {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Main content */
+  main { 
+    max-width:1200px; 
+    margin:0 auto; 
+    padding:2rem; 
+  }
+  
+  /* Virtual card section */
+  .virtual-card-section {
+    background:#fff; 
+    padding:2rem; 
+    border-radius:12px; 
+    box-shadow:0 4px 6px rgba(0,0,0,0.1); 
+    margin-bottom:2rem;
+  }
+  
+  .virtual-card-section h1 {
+    margin-top:0; 
+    font-size:2rem; 
+    color:var(--primary-color);
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Container for both cards */
+  .cards-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Visual card - Premier Style */
+  .virtual-card-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    flex: 1;
+  }
+  
+  .virtual-card {
+    width: 100%;
+    height: 240px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--card-premier-color), #2a3b6a);
+    color: white;
+    overflow: hidden;
+  }
+  
+  .virtual-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+  
+  .card-front {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card-back {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    transform: rotateY(180deg);
+    display: none;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .bank-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .card-type {
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+  }
+  
+  .card-number {
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    text-align: center;
+    margin: 1.5rem 0;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .card-expiry {
+    font-size: 0.9rem;
+  }
+  
+  .card-expiry-label {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-bottom: 0.2rem;
+  }
+  
+  .card-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.2);
+  }
+  
+  .status-blocked {
+    background-color: rgba(234, 67, 53, 0.3);
+    color: #ff8a80;
+  }
+  
+  .card-logo {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    height: 40px;
+  }
+  
+  .card-chip {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.5rem;
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(135deg, #f5d76e, #e67e22);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+  
+  /* Pending section */
+  .pending-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    text-align: left;
+  }
+  
+  .pending-section h3 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .pending-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .pending-item:last-child {
+    border-bottom: none;
+  }
+  
+  .pending-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pending-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .pending-date {
+    font-size: 0.8rem;
+    color: #5f6368;
+  }
+  
+  .pending-status {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    align-self: center;
+  }
+  
+  /* Limits section */
+  .limits-section {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: left;
+  }
+  
+  .limits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .limits-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .increase-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .increase-btn:hover {
+    background: #d9001f;
+  }
+  
+  .limit-progress {
+    margin: 1rem 0;
+  }
+  
+  .limit-amounts {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color), #5ac18e);
+    border-radius: 4px;
+    width: 0%; /* Set to 0% because cards are blocked */
+    position: relative;
+  }
+  
+  .progress-used {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 0.75rem;
+    background: var(--text-color);
+    color: white;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+  }
+  
+  /* Card actions */
+  .card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .card-actions button {
+    background: var(--primary-color); 
+    color: #fff; 
+    border: none; 
+    padding: 0.75rem 1.5rem;
+    border-radius:6px; 
+    cursor:pointer; 
+    transition:0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .card-actions button:hover { 
+    background:#d9001f; 
+  }
+  
+  .card-actions button i {
+    font-size: 1rem;
+  }
+  
+  .card-actions button.secondary {
+    background: #f1f3f4;
+    color: var(--text-color);
+  }
+  
+  .card-actions button.secondary:hover {
+    background: #e0e0e0;
+  }
+
+  /* Transaction history styles */
+  .transaction-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  .transaction-table th {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 500;
+  }
+  
+  .transaction-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .transaction-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .transaction-table tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .status-accepted {
+    color: var(--success-color);
+    font-weight: 500;
+  }
+  
+  .status-pending {
+    color: var(--pending-color);
+    font-weight: 500;
+  }
+  
+  .status-refused {
+    color: var(--error-color);
+    font-weight: 500;
+  }
+
+  /* Mobile version of transactions */
+  .mobile-transactions {
+    display: none;
+  }
+  
+  .transaction-card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .transaction-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .transaction-label {
+    font-weight: 500;
+    color: #5f6368;
+    min-width: 120px;
+  }
+  
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1500;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #5f6368;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .close:hover {
+    color: var(--error-color);
+    transform: scale(1.1);
+  }
+  
+  /* Responsive */
+  @media(max-width:768px) {
+    .hamburger { 
+      display:flex; 
+    }
+    nav { 
+      display:none; 
+      width:100%; 
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    nav.active { 
+      display:block; 
+    }
+    nav ul { 
+      flex-direction:column; 
+      align-items:center; 
+      padding: 1rem 0;
+    }
+    nav ul li { 
+      margin:10px 0; 
+      width: 100%;
+      text-align: center;
+    }
+    nav ul li a {
+      justify-content: center;
+      padding: 0.5rem;
+    }
+    header { 
+      flex-wrap:wrap; 
+    }
+    .logo img { 
+      width:150px; 
+    }
+    .welcome-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .welcome-banner h1 {
+      font-size: 1.5rem;
+    }
+    .welcome-banner .date {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+    main {
+      padding: 1rem;
+    }
+    .virtual-card-section {
+      padding: 1.5rem;
+    }
+    .cards-container {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .virtual-card {
+      height: 220px;
+    }
+    .card-actions {
+      flex-direction: column;
+    }
+    .card-actions button {
+      width: 100%;
+      justify-content: center;
+    }
+    .modal-content {
+      margin: 10% auto;
+      padding: 20px;
+      width: 95%;
+    }
+    
+    /* Table adaptation for mobile */
+    .transaction-table-container {
+      display: none;
+    }
+    
+    .mobile-transactions {
+      display: block;
+    }
+  }
+  
+  @media(min-width:769px) {
+    .mobile-transactions {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><img src="logo2.png" alt="Crédit Mutuel logo"></div>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+  <nav>
+    <ul>
+      <li><a href="dask2m8.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="comp4z1.html"><i class="fas fa-wallet"></i> Accounts</a></li>
+      <li><a href="virr9t3.html"><i class="fas fa-exchange-alt"></i> Transfers</a></li>
+      <li><a href="serm5q6.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+      <li><a href="carv8w2.html" class="active"><i class="fas fa-credit-card"></i> My Cards</a></li>
+      <li><a href="pros1j7.html"><i class="fas fa-user"></i> Profile</a></li>
+      <li><a href="deconx7f9.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <marquee style="color: #FF0000; padding: 10px 0;">Your account is blocked, please contact your account manager</marquee>
+  
+  <div class="welcome-banner">
+    <h1>My Premier Cards</h1>
+    <div class="date" id="current-date"></div>
+  </div>
+  
+  <div class="virtual-card-section">
+    <h1><i class="fas fa-credit-card"></i> My Premier Cards</h1>
+    
+    <!-- Container for both cards -->
+    <div class="cards-container">
+      <!-- First card - Visa Premier -->
+      <div class="virtual-card-container">
+        <div class="virtual-card">
+          <div class="card-front">
+            <div class="card-header">
+              <div class="bank-name">Absa bank</div>
+              <div class="card-type">PREMIER</div>
+            </div>
+            
+            <div class="card-number">**** **** **** 4598</div>
+            
+            <div class="card-footer">
+              <div class="card-expiry">
+                <div class="card-expiry-label">VALID THRU</div>
+                <div>07/19</div>
+              </div>
+              <div class="card-status status-blocked">
+                <i class="fas fa-lock"></i> Blocked
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- "Card in progress" section for first card -->
+        <div class="pending-section">
+          <h3><i class="fas fa-clock"></i> In progress on this card</h3>
+          
+          <div class="pending-item">
+            <div class="pending-info">
+              <span class="pending-label">Unblock request</span>
+              <span class="pending-date">Pending since 08/18/2017</span>
+            </div>
+            <span class="pending-status status-pending">In process</span>
+          </div>
+        </div>
+        
+        <!-- Actions for first card -->
+        <div class="card-actions">
+          <button onclick="alert('Your PIN cannot be displayed - card blocked')">
+            <i class="fas fa-key"></i> PIN
+          </button>
+          <button onclick="openModal('visa')">
+            <i class="fas fa-history"></i> History
+          </button>
+          <button class="secondary" onclick="alert('Your account is blocked, please contact your account manager')">
+            <i class="fas fa-lock-open"></i> Unblock
+          </button>
+        </div>
+      </div>
+      
+      <!-- Second card - Visa Premier -->
+      <div class="virtual-card-container">
+        <div class="virtual-card">
+          <div class="card-front">
+            <div class="card-header">
+              <div class="bank-name">Absa bank</div>
+              <div class="card-type">PREMIER</div>
+            </div>
+            
+            <div class="card-number">**** **** **** 7821</div>
+            
+            <div class="card-footer">
+              <div class="card-expiry">
+                <div class="card-expiry-label">VALID THRU</div>
+                <div>11/19</div>
+              </div>
+              <div class="card-status status-blocked">
+                <i class="fas fa-lock"></i> Blocked
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- "Card in progress" section for second card -->
+        <div class="pending-section">
+          <h3><i class="fas fa-clock"></i> In progress on this card</h3>
+          
+          <div class="pending-item">
+            <div class="pending-info">
+              <span class="pending-label">Unblock request</span>
+              <span class="pending-date">Pending since 08/18/2017</span>
+            </div>
+            <span class="pending-status status-pending">In process</span>
+          </div>
+        </div>
+        
+        <!-- Actions for second card -->
+        <div class="card-actions">
+          <button onclick="alert('Your PIN cannot be displayed - card blocked')">
+            <i class="fas fa-key"></i> PIN
+          </button>
+          <button onclick="openModal('mastercard')">
+            <i class="fas fa-history"></i> History
+          </button>
+          <button class="secondary" onclick="alert('Your account is blocked, please contact your account manager')">
+            <i class="fas fa-lock-open"></i> Unblock
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- "Manage my limits" common section -->
+    <div class="limits-section">
+      <div class="limits-header">
+        <h3><i class="fas fa-chart-line"></i> Manage my limits</h3>
+        <button class="increase-btn" onclick="alert('Your account is blocked, please contact your account manager')">
+          <i class="fas fa-plus"></i> Increase
+        </button>
+      </div>
+      
+      <div class="limit-progress">
+        <div class="limit-amounts">
+          <span>0 €</span>
+          <span>3,000 €</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;">
+            <span class="progress-used">0 €</span>
+          </div>
+        </div>
+        <div style="text-align: right; font-size: 0.9rem; margin-top: 0.5rem;">
+          Monthly limit used at 0% (cards blocked)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transaction history modal -->
+  <div id="historyModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"><i class="fas fa-history"></i> Transaction History</h2>
+      <p id="modalSubtitle">Recent transactions made with your bank cards.</p>
+      
+      <!-- Desktop version -->
+      <div class="transaction-table-container">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Operation</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTableBody">
+            <!-- Dynamically filled by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Mobile version -->
+      <div class="mobile-transactions" id="mobileTransactions">
+        <!-- Dynamically filled by JavaScript -->
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button onclick="closeModal()" style="padding: 0.75rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer;">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+	if (sessionStorage.getItem("est_connecte") !== "true") {
+  window.location.href = "conx7f9.html";
+}
+  // Hamburger menu
+  document.querySelector('.hamburger').addEventListener('click', function() {
+    document.querySelector('nav').classList.toggle('active');
+    this.classList.toggle('active');
+  });
+
+  // Current date
+  const updateDate = () => {
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    };
+    document.getElementById('current-date').textContent = 
+      new Date().toLocaleDateString('en-US', options);
+  };
+  updateDate();
+  setInterval(updateDate, 60000);
+
+  // Transaction data
+  const transactionsData = {
+    visa: [
+      { date: "04/18/2016 09:42", operation: "Amazon.fr Marketplace", amount: "- 79.90 €", status: "accepted" },
+      { date: "04/17/2016 18:15", operation: "Carrefour Market Paris", amount: "- 56.40 €", status: "accepted" },
+      { date: "04/15/2016 12:03", operation: "Total Access Station", amount: "- 74.20 €", status: "refused" },
+      { date: "04/12/2016 00:15", operation: "Netflix Subscription", amount: "- 17.99 €", status: "accepted" }
+    ],
+    mastercard: [
+      { date: "04/10/2016 14:30", operation: "Amazon Refund", amount: "+ 35.50 €", status: "accepted" },
+      { date: "04/08/2016 20:15", operation: "Uber Eats", amount: "- 24.80 €", status: "pending" },
+      { date: "04/05/2016 11:20", operation: "Fnac Paris", amount: "- 129.99 €", status: "accepted" },
+      { date: "04/01/2016 09:10", operation: "Free Mobile", amount: "- 15.99 €", status: "accepted" }
+    ]
+  };
+
+  // Modal management
+  function openModal(cardType) {
+    const modal = document.getElementById('historyModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const tableBody = document.getElementById('transactionsTableBody');
+    const mobileTransactions = document.getElementById('mobileTransactions');
+    
+    // Set title based on card
+    if (cardType === 'visa') {
+      modalTitle.innerHTML = '<i class="fas fa-history"></i> Visa Premier History ••••4598';
+      modalSubtitle.textContent = 'Recent transactions made with your Visa Premier card.';
+    } else {
+      modalTitle.innerHTML = '<i class="fas fa-history"></i> Visa Premier History ••••7821';
+      modalSubtitle.textContent = 'Recent transactions made with your Visa Premier card.';
+    }
+    
+    // Get transactions for selected card
+    const transactions = transactionsData[cardType];
+    
+    // Clear existing content
+    tableBody.innerHTML = '';
+    mobileTransactions.innerHTML = '';
+    
+    // Fill desktop table
+    transactions.forEach(transaction => {
+      const row = document.createElement('tr');
+      
+      const statusClass = `status-${transaction.status}`;
+      const statusText = 
+        transaction.status === 'accepted' ? 'Accepted' :
+        transaction.status === 'pending' ? 'Pending' : 'Refused';
+      
+      row.innerHTML = `
+        <td>${transaction.date}</td>
+        <td>${transaction.operation}</td>
+        <td>${transaction.amount}</td>
+        <td class="${statusClass}">${statusText}</td>
+      `;
+      
+      tableBody.appendChild(row);
+    });
+    
+    // Fill mobile version
+    transactions.forEach(transaction => {
+      const statusClass = `status-${transaction.status}`;
+      const statusText = 
+        transaction.status === 'accepted' ? 'Accepted' :
+        transaction.status === 'pending' ? 'Pending' : 'Refused';
+      
+      const card = document.createElement('div');
+      card.className = 'transaction-card';
+      card.innerHTML = `
+        <div class="transaction-row">
+          <span class="transaction-label">Date:</span>
+          <span>${transaction.date}</span>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-label">Operation:</span>
+          <span>${transaction.operation}</span>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-label">Amount:</span>
+          <span>${transaction.amount}</span>
+        </div>
+        <div class="transaction-row">
+          <span class="transaction-label">Status:</span>
+          <span class="${statusClass}">${statusText}</span>
+        </div>
+      `;
+      
+      mobileTransactions.appendChild(card);
+    });
+    
+    // Show modal
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeModal() {
+    document.getElementById('historyModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+  
+  window.onclick = function(event) {
+    if (event.target == document.getElementById('historyModal')) {
+      closeModal();
+    }
+  }
+
+  // 3D effect on card hover
+  const virtualCards = document.querySelectorAll('.virtual-card');
+  
+  virtualCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const angleX = (y - centerY) / 20;
+      const angleY = (centerX - x) / 20;
+      
+      card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+      card.style.boxShadow = '0 15px 35px rgba(0,0,0,0.3)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0) rotateY(0) translateY(0)';
+      card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+    });
+  });
+
+  // Table responsive adaptation
+  function checkScreenSize() {
+    if (window.innerWidth <= 768) {
+      document.querySelector('.transaction-table-container').style.display = 'none';
+      document.querySelector('.mobile-transactions').style.display = 'block';
+    } else {
+      document.querySelector('.transaction-table-container').style.display = 'block';
+      document.querySelector('.mobile-transactions').style.display = 'none';
+    }
+  }
+  
+  // Execute on load and resize
+  window.addEventListener('load', checkScreenSize);
+  window.addEventListener('resize', checkScreenSize);
+</script>
+</body>
+</html>

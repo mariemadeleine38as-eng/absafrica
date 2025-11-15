@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow, noarchive">
+	<base href="">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logout</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .logo img {
+    max-width: 200px;
+    height: auto;
+  }
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  nav ul li a:hover {
+    color: #007bff;
+  }
+  main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  .logout-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 2rem;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  h1 {
+    color: #fc2949;
+    margin-bottom: 1rem;
+  }
+  p {
+    margin-bottom: 2rem;
+  }
+  .btn {
+    display: inline-block;
+    background-color: #fc2949;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger span {
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: 0.4s;
+  }
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+    nav {
+      display: none;
+      width: 100%;
+    }
+    nav.active {
+      display: block;
+    }
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    header {
+      flex-wrap: wrap;
+    }
+    .logo img {
+      max-width: 150px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="logo2.png" width="196.8" height="54.6" alt="Crédit Mutuel logo"/>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dask2m8.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="comp4z1.html"><i class="fas fa-wallet"></i> Accounts</a></li>
+        <li><a href="virr9t3.html"><i class="fas fa-exchange-alt"></i> Transfers</a></li>
+        <li><a href="serm5q6.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a href="pros1j7.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="deconx7f9.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="logout-container">
+      <h1>Logout</h1>
+      <p>You are about to log out. Are you sure you want to end your session?</p>
+      <a href="index.html" class="btn" id="logout-btn">Log Out</a>
+    </div>
+  </main>
+
+  <script>
+	  if (sessionStorage.getItem("est_connecte") !== "true") {
+  window.location.href = "conx7f9.html";
+}
+    // Hamburger menu
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    // Logout management
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Here you can add client-side logout logic if needed
+      // For example, remove authentication tokens from localStorage
+
+      // Redirect to home page
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

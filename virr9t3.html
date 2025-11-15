@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transfers and History</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+--primary-color: #FF0000;        /* Rouge ABSA */
+    --secondary-color: #000000;      /* Noir ABSA */
+    --accent-color: #FFD700;         /* Or ABSA */
+    --text-color: #000000;           /* Texte noir ABSA */
+    --background-color: #FFFFFF;     /* Fond blanc ABSA */
+    --error-color: #FF0000;          /* Rouge ABSA pour les erreurs */
+    --success-color: #00A650;        /* Vert ABSA */
+    --pending-color: #FFD700;        /* Or ABSA pour les statuts en attente */
+    --card-premier-color: #000000;   /* Noir ABSA pour cartes premium */
+    --card-gold-color: #FFD700;      /* Or ABSA */
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  header {
+    background-color: #fff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .logo img {
+    width: 196.8px;
+    height: 54.6px;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  nav ul li a:hover {
+    color: var(--primary-color);
+  }
+
+  nav ul li a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 30px;
+    height: 3px;
+    background: var(--text-color);
+    margin: 3px 0;
+    transition: 0.4s;
+  }
+
+  main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.1) 10px,
+      rgba(255, 255, 255, 0.1) 20px
+    );
+    animation: shine 20s linear infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .welcome-banner h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .welcome-banner .date {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .transfer-section, .history-section {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease-out, slideIn 0.5s ease-out;
+  }
+
+  .transfer-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  input, select, textarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+  }
+
+  button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #1967d2;
+    transform: translateY(-2px);
+  }
+
+  .transfer-list, .history-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .transfer-item, .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+  }
+
+  .transfer-item:hover, .history-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .transfer-details, .history-details {
+    flex: 1;
+  }
+
+  .transfer-description, .history-description {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+
+  .transaction-icon {
+    margin-right: 10px;
+    width: 20px;
+    color: var(--primary-color);
+  }
+
+  .transfer-date, .history-date {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.25rem;
+  }
+
+  .transfer-amount, .history-amount {
+    font-weight: bold;
+    margin: 0 1rem;
+    white-space: nowrap;
+  }
+
+  .transfer-amount.outgoing, .history-amount.outgoing {
+    color: var(--error-color);
+  }
+
+  .transfer-amount.incoming, .history-amount.incoming {
+    color: var(--success-color);
+  }
+
+  .transfer-status, .history-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .transfer-status.pending, .history-status.pending {
+    background-color: var(--accent-color);
+    color: #fff;
+  }
+
+  .transfer-status.interrupted, .history-status.interrupted {
+    background-color: var(--error-color);
+    color: #fff;
+  }
+
+  .transfer-status.completed, .history-status.completed {
+    background-color: var(--success-color);
+    color: #fff;
+  }
+
+  .error-message {
+    color: var(--error-color);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  #transfer-status {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #transfer-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    opacity: 1;
+  }
+
+  #transfer-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    opacity: 1;
+  }
+
+  .alert-banner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    text-align: center;
+    max-width: 80%;
+    display: none;
+  }
+
+  .alert-banner.show {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .alert-content {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--error-color);
+  }
+
+  .alert-close {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .alert-close:hover {
+    background-color: #1967d2;
+  }
+
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .tab {
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .tab:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  .tab:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  .tab.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+  }
+
+  .content {
+    display: none;
+  }
+
+  .content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+    nav {
+      display: none;
+      width: 100%;
+    }
+    nav.active {
+      display: block;
+    }
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    .logo img {
+      width: 150px;
+    }
+    .welcome-banner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .welcome-banner .date {
+      margin-top: 1rem;
+    }
+    .tab-container {
+      flex-direction: column;
+    }
+    .tab {
+      border-radius: 0;
+    }
+    .tab:first-child {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      border-bottom-left-radius: 0;
+    }
+    .tab:last-child {
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+    .transfer-item, .history-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .transfer-amount, .history-amount {
+      margin: 0.5rem 0;
+    }
+    .transfer-status, .history-status {
+      margin-top: 0.5rem;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="logo2.png" alt="Crédit Mutuel logo">
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="dask2m8.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="comp4z1.html"><i class="fas fa-wallet"></i> Accounts</a></li>
+        <li><a href="virr9t3.html" class="active"><i class="fas fa-exchange-alt"></i> Transfers</a></li>
+        <li><a href="serm5q6.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a href="carv8w2.html"><i class="fas fa-credit-card"></i> My Cards</a></li>
+        <li><a href="pros1j7.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="deconx7f9.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <marquee style="color: #FF0000">Your account is blocked, please contact your account manager</marquee>
+    <div class="welcome-banner">
+      <h1>Transfers and History</h1>
+      <div class="date" id="current-date"></div>
+    </div>
+
+    <div class="tab-container">
+      <div class="tab active" data-tab="transfers">Transfers</div>
+      <div class="tab" data-tab="history">History</div>
+    </div>
+
+    <div id="transfers-content" class="content active">
+      <section class="transfer-section">
+        <h2>New Transfer</h2>
+        <form class="transfer-form" id="transfer-form">
+          <div class="form-group">
+            <label for="from-account">From Account</label>
+            <select id="from-account" required>
+              <option value="">Select an account</option>
+              <option value="current">Current Account - 1,786,450.42 Euro</option>
+              <option value="savings">Savings Account - 0.00 Euro</option>
+              <option value="pel">Home Savings Plan 11,132.00 Euro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="to-account-type">Beneficiary Type</label>
+            <select id="to-account-type" required>
+              <option value="">Select type</option>
+              <option value="internal">Internal account</option>
+              <option value="external">External account</option>
+            </select>
+          </div>
+          <div class="form-group" id="internal-accounts" style="display:none;">
+            <label for="to-account-internal">Beneficiary Account</label>
+            <select id="to-account-internal">
+              <option value="">Select an account</option>
+              <option value="savings">Savings Account - 8,245.60 Euro</option>
+              <option value="pel">Home Savings Plan - -11,132.00 Euro</option>
+            </select>
+          </div>
+          <div class="form-group" id="external-account" style="display:none;">
+            <label for="to-account-external">Beneficiary IBAN</label>
+            <input type="text" id="to-account-external" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX">
+          </div>
+          <div class="form-group">
+            <label for="beneficiary-name">Beneficiary Name</label>
+            <input type="text" id="beneficiary-name" placeholder="Full name of beneficiary" required>
+          </div>
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="Amount in euros" step="0.01" min="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="transfer-date">Transfer Date</label>
+            <input type="date" id="transfer-date" required>
+          </div>
+          <div class="form-group">
+            <label for="reason">Reason</label>
+            <textarea id="reason" rows="3" placeholder="Transfer reason" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="reference">Reference</label>
+            <input type="text" id="reference" placeholder="Personal reference (optional)">
+          </div>
+          <button type="submit">Make Transfer</button>
+        </form>
+        <div id="transfer-status"></div>
+      </section>
+
+      <section class="recent-transfers">
+        <h2>Recent Transfers</h2>
+        <ul class="transfer-list" id="recent-transfers-list">
+          <!-- Dynamically filled by JavaScript -->
+        </ul>
+      </section>
+    </div>
+
+    <div id="history-content" class="content">
+      <section class="history-section">
+        <h2>Transaction History</h2>
+        <ul class="history-list" id="history-list">
+          <!-- Dynamically filled by JavaScript -->
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <div class="alert-banner" id="alert-banner">
+    <div class="alert-content">TRANSFER INTERRUPTED, YOUR ACCOUNT IS RESTRICTED PLEASE CONTACT YOUR ACCOUNT MANAGER!</div>
+    <button class="alert-close" id="alert-close">Close</button>
+  </div>
+
+  <script>
+	  if (sessionStorage.getItem("est_connecte") !== "true") {
+  window.location.href = "conx7f9.html";
+}
+    // Fixed data for history with different transaction types
+    const fixedTransactions = [
+      {
+        id: 1,
+        type: "transfer",
+        description: "Transfer sent to Alice Despish",
+        amount: "150.00",
+        date: new Date(2016, 6, 25),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "exchange-alt"
+      },
+      {
+        id: 2,
+        type: "purchase",
+        description: "Online purchase Amazon",
+        amount: "89.99",
+        date: new Date(2016, 6, 24),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "shopping-cart"
+      },
+      {
+        id: 3,
+        type: "transfer",
+        description: "Transfer received from Richmark Martin",
+        amount: "320.50",
+        date: new Date(2016, 6, 23),
+        status: "Completed",
+        direction: "incoming",
+        icon: "exchange-alt"
+      },
+      {
+        id: 4,
+        type: "commission",
+        description: "Commission received",
+        amount: "25.00",
+        date: new Date(2016, 6, 22),
+        status: "Completed",
+        direction: "incoming",
+        icon: "hand-holding-usd"
+      },
+      {
+        id: 5,
+        type: "withdrawal",
+        description: "ATM withdrawal Crédit Mutuel",
+        amount: "200.00",
+        date: new Date(2016, 6, 21),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "money-bill-wave"
+      },
+      {
+        id: 6,
+        type: "purchase",
+        description: "Card payment Carrefour",
+        amount: "56.40",
+        date: new Date(2016, 6, 20),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "credit-card"
+      },
+      {
+        id: 7,
+        type: "transfer",
+        description: "Transfer sent to Claire Auberger",
+        amount: "75.20",
+        date: new Date(2016, 6, 19),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "exchange-alt"
+      },
+      {
+        id: 8,
+        type: "fees",
+        description: "Bank fees",
+        amount: "15.00",
+        date: new Date(2016, 6, 18),
+        status: "Charged",
+        direction: "outgoing",
+        icon: "file-invoice-dollar"
+      },
+      {
+        id: 9,
+        type: "transfer",
+        description: "Transfer received from David Minz",
+        amount: "420.00",
+        date: new Date(2016, 6, 17),
+        status: "Completed",
+        direction: "incoming",
+        icon: "exchange-alt"
+      },
+      {
+        id: 10,
+        type: "subscription",
+        description: "Netflix subscription",
+        amount: "17.99",
+        date: new Date(2016, 6, 16),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "calendar-alt"
+      },
+      {
+        id: 11,
+        type: "salary",
+        description: "Company salary",
+        amount: "2450.00",
+        date: new Date(2016, 6, 15),
+        status: "Completed",
+        direction: "incoming",
+        icon: "briefcase"
+      },
+      {
+        id: 12,
+        type: "purchase",
+        description: "Total gas station",
+        amount: "74.20",
+        date: new Date(2016, 6, 14),
+        status: "Completed",
+        direction: "outgoing",
+        icon: "gas-pump"
+      }
+    ];
+
+    let transactionHistory = [...fixedTransactions];
+
+    // Current date
+    const updateDate = () => {
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      };
+      document.getElementById('current-date').textContent = 
+        new Date().toLocaleDateString('en-US', options);
+    };
+    
+    // Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      updateDate();
+      setInterval(updateDate, 60000); // Update every minute
+
+      // Hamburger menu
+      document.querySelector('.hamburger').addEventListener('click', function() {
+        document.querySelector('nav').classList.toggle('active');
+      });
+
+      // Beneficiary account type management
+      const toAccountType = document.getElementById('to-account-type');
+      const internalAccounts = document.getElementById('internal-accounts');
+      const externalAccount = document.getElementById('external-account');
+
+      toAccountType.addEventListener('change', function() {
+        if (this.value === 'internal') {
+          internalAccounts.style.display = 'block';
+          externalAccount.style.display = 'none';
+        } else if (this.value === 'external') {
+          internalAccounts.style.display = 'none';
+          externalAccount.style.display = 'block';
+        } else {
+          internalAccounts.style.display = 'none';
+          externalAccount.style.display = 'none';
+        }
+      });
+
+      // Transfer form management
+      const transferForm = document.getElementById('transfer-form');
+      const transferStatus = document.getElementById('transfer-status');
+      const alertBanner = document.getElementById('alert-banner');
+      const alertClose = document.getElementById('alert-close');
+
+      transferForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Form validation
+        const formInputs = this.querySelectorAll('input, select, textarea');
+        let isValid = true;
+        
+        formInputs.forEach(input => {
+          if (input.required && !input.value) {
+            isValid = false;
+            input.style.borderColor = 'var(--error-color)';
+          } else {
+            input.style.borderColor = '#ddd';
+          }
+        });
+
+        if (!isValid) {
+          transferStatus.textContent = "Please fill in all required fields";
+          transferStatus.className = "error";
+          return;
+        }
+
+        // Transfer simulation
+        transferStatus.textContent = "Transfer in progress...";
+        transferStatus.className = "";
+
+        setTimeout(() => {
+          // Add new transaction with "Interrupted" status
+          const newTransaction = {
+            id: Date.now(),
+            type: "transfer",
+            description: "Transfer to " + document.getElementById('beneficiary-name').value,
+            amount: document.getElementById('amount').value,
+            date: new Date(),
+            status: "Interrupted",
+            direction: "outgoing",
+            icon: "exchange-alt"
+          };
+
+          transactionHistory.unshift(newTransaction);
+          updateTransactionList();
+
+          // Display status
+          transferStatus.textContent = "Transfer interrupted";
+          transferStatus.className = "error";
+
+          // Reset form
+          setTimeout(() => {
+            transferForm.reset();
+            transferStatus.textContent = "";
+            transferStatus.className = "";
+            internalAccounts.style.display = 'none';
+            externalAccount.style.display = 'none';
+
+            // Display alert
+            setTimeout(() => {
+              alertBanner.classList.add('show');
+            }, 1000);
+          }, 2000);
+        }, 1500);
+      });
+
+      // Close alert
+      alertClose.addEventListener('click', function() {
+        alertBanner.classList.remove('show');
+      });
+
+      // Tab management
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tab;
+
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          contents.forEach(content => {
+            content.classList.remove('active');
+            if (content.id === `${target}-content`) {
+              content.classList.add('active');
+            }
+          });
+        });
+      });
+
+      // Update transaction list
+      updateTransactionList();
+      animateSections();
+    });
+
+    function updateTransactionList() {
+      const recentTransfersList = document.getElementById('recent-transfers-list');
+      const historyList = document.getElementById('history-list');
+      
+      recentTransfersList.innerHTML = '';
+      historyList.innerHTML = '';
+
+      transactionHistory.forEach(transaction => {
+        const listItem = document.createElement('li');
+        listItem.className = 'transfer-item';
+        
+        listItem.innerHTML = `
+          <div class="transfer-details">
+            <span class="transfer-description">
+              <i class="fas ${transaction.icon} transaction-icon"></i>
+              ${transaction.description}
+            </span>
+            <span class="transfer-date">${transaction.date.toLocaleDateString('en-US')}</span>
+          </div>
+          <span class="transfer-amount ${transaction.direction}">
+            ${transaction.direction === 'outgoing' ? '-' : '+'}${transaction.amount} €
+          </span>
+          <span class="transfer-status ${getStatusClass(transaction.status)}">
+            ${transaction.status}
+          </span>
+        `;
+
+        recentTransfersList.appendChild(listItem.cloneNode(true));
+        historyList.appendChild(listItem);
+      });
+    }
+
+    function getStatusClass(status) {
+      if (status === "Interrupted") {
+        return "interrupted";
+      } else if (status === "Charged") {
+        return "completed";
+      }
+      return "completed";
+    }
+
+    function animateSections() {
+      const sections = document.querySelectorAll('.transfer-section, .recent-transfers, .history-section');
+      sections.forEach((section, index) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          section.style.opacity = '1';
+          section.style.transform = 'translateY(0)';
+        }, index * 200);
+      });
+    }
+  </script>
+</body>
+</html>
